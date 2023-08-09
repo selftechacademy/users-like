@@ -1,23 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import AddUser from "./components/addUser/AddUser";
+import UserView from "./components/userView/UserView";
+import "./App.css";
 
 function App() {
+  const [usersList, setUsersList] = useState([]);
+
+  const updateUsersList = (newUser) => {
+    setUsersList([...usersList, newUser]);
+  };
+
+  const updateUserReactions = (name, emojiName) => {
+    const updatedUsers = usersList.map((el) => {
+      if (el.name === name) {
+        return {
+          ...el,
+          reactions: {
+            ...el.reactions,
+            [emojiName]: el.reactions[emojiName] + 1,
+          },
+        };
+      } else return el;
+    });
+    setUsersList([...updatedUsers]);
+  };
+
+  const renderUsers = usersList.map((el, index) => (
+    <UserView
+      key={index}
+      name={el.name}
+      lastName={el.lastName}
+      reactions={el.reactions}
+      updateUserReactions={updateUserReactions}
+    />
+  ));
+  console.log("users list", usersList);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h5>Users App</h5>
       </header>
+      <AddUser updateUsersList={updateUsersList} />
+      {renderUsers}
     </div>
   );
 }
