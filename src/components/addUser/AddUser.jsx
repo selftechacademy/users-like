@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateUsersList } from "../../redux/usersSlice";
 
 const defaultValues = {
   name: "",
@@ -12,13 +14,14 @@ const defaultValues = {
 
 const AddUser = (props) => {
   const [userData, setUserData] = useState(defaultValues);
+  const dispatch = useDispatch();
 
   const isBtnDisabled = !userData.name || !userData.lastName;
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    props.updateUsersList(userData);
-    console.log("user Data", userData);
+    // props.updateUsersList(userData);
+    dispatch(updateUsersList(userData));
     setUserData(defaultValues);
   };
 

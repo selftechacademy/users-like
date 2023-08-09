@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { updateUserReactions } from "../../redux/usersSlice";
 
 const emojiObj = {
   like: "👍",
@@ -6,11 +8,15 @@ const emojiObj = {
   heart: "❤️",
 };
 
-const UserView = ({ name, lastName, reactions, updateUserReactions }) => {
-  const renderEmojies = Object.entries(emojiObj).map(([key, value]) => (
-    <button key={key} onClick={() => updateUserReactions(name, key)}>
+const UserView = ({ name, lastName, reactions }) => {
+  const dispatch = useDispatch();
+  const renderEmojies = Object.entries(emojiObj).map(([emojiName, value]) => (
+    <button
+      key={emojiName}
+      onClick={() => dispatch(updateUserReactions({ name, emojiName }))}
+    >
       {" "}
-      {value} {reactions[key]}
+      {value} {reactions[emojiName]}
     </button>
   ));
 
